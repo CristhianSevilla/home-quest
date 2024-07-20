@@ -1,15 +1,23 @@
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import { defineStore } from "pinia";
 import { useFirebaseAuth } from "vuefire";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 export const useAuthStore = defineStore("authStore", () => {
   const auth = useFirebaseAuth();
-  const errorMsg = ref("");
+  const errorMsg = ref(null);
   const authUser = ref({});
   const errorCodes = {
     "auth/invalid-credential": "Credenciales no válidas",
   };
+
+  onMounted(() => {
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        authUser.value = user;
+      }
+    });
+  });
 
   const login = ({ email, password }) => {
     signInWithEmailAndPassword(auth, email, password)
