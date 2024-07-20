@@ -13,6 +13,7 @@
           clearable
           class="mb-2"
           color="light-blue-darken-2"
+          density="compact"
           v-model="email.value.value"
           :error-messages="email.errorMessage.value"
         />
@@ -23,11 +24,20 @@
           variant="outlined"
           clearable
           color="light-blue-darken-2"
+          density="compact"
           v-model="password.value.value"
           :error-messages="password.errorMessage.value"
         />
+        <v-alert
+          v-if="auth.hasError"
+          type="error"
+          variant="outlined"
+          border="start"
+          density="compact"
+          text="Credenciales no válidas"
+        />
         <v-btn
-          class="mt-2"
+          class="mt-3"
           size="large"
           color="light-blue-darken-2"
           type="submit"
