@@ -18,6 +18,8 @@
           :error-messages="email.errorMessage.value"
         />
         <v-text-field
+          :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="visible ? 'text' : 'password'"
           label="Contraseña"
           type="password"
           placeholder="Ingresa tu contraseña"
@@ -26,18 +28,26 @@
           density="compact"
           v-model="password.value.value"
           :error-messages="password.errorMessage.value"
-          :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
-          :type="visible ? 'text' : 'password'"
           @click:append-inner="visible = !visible"
         />
         <v-alert
           v-if="auth.hasError"
           type="error"
           variant="outlined"
-          border="start"
           density="compact"
           text="Credenciales no válidas"
+          class="mb-2"
         />
+        <v-card
+          v-if="auth.hasError"
+          class="mb-2"
+          color="surface-variant"
+          variant="tonal"
+        >
+          <v-card-text class="text-medium-emphasis text-caption">
+            Advertencia: Se bloqueará tu cuenta tras 3 intentos fallidos.
+          </v-card-text>
+        </v-card>
         <v-btn
           class="mt-3"
           size="large"
