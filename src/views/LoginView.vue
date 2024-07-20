@@ -22,11 +22,13 @@
           type="password"
           placeholder="Ingresa tu contraseña"
           variant="outlined"
-          clearable
           color="light-blue-darken-2"
           density="compact"
           v-model="password.value.value"
           :error-messages="password.errorMessage.value"
+          :append-inner-icon="visible ? 'mdi-eye-off' : 'mdi-eye'"
+          :type="visible ? 'text' : 'password'"
+          @click:append-inner="visible = !visible"
         />
         <v-alert
           v-if="auth.hasError"
@@ -53,13 +55,14 @@
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useField, useForm } from "vee-validate";
 import { loginSchema as validationSchema } from "../validation/loginSchema";
 import { useAuthStore } from "@/stores/auth";
 
 const { handleSubmit } = useForm({ validationSchema });
 const auth = useAuthStore();
-
+const visible = ref(false);
 const email = useField("email");
 const password = useField("password");
 
