@@ -1,5 +1,5 @@
 <template>
-  <v-app>
+  <v-app class="bg-grey-lighten-4">
     <!-- Barra de navegación -->
     <v-app-bar class="bg-white" elevation="0">
       <!-- Menú para dispositivos móviles -->
@@ -22,8 +22,15 @@
         </template>
 
         <v-card min-width="350">
-          <v-list>
-            <v-list-item @click="navigateTo('home')">Catálogo</v-list-item>
+          <v-list v-if="isAuth">
+            <v-list-item @click="navigateTo('manage-houses')"
+              >Administración</v-list-item
+            >
+            <v-divider></v-divider>
+            <v-list-item>Cerrar sesión</v-list-item>
+          </v-list>
+          <v-list v-else>
+            <v-list-item @click="navigateTo('home')">Inicio</v-list-item>
             <v-divider></v-divider>
             <v-list-item @click="navigateTo('login')"
               >Iniciar sesión</v-list-item
@@ -46,18 +53,33 @@
         </v-btn>
       </v-app-bar-title>
       <template #append>
-        <v-btn
-          class="text-blue-darken-2 text-none text-body-1 d-none d-lg-flex"
-          :to="{ name: 'home' }"
-        >
-          Catálogo
-        </v-btn>
-        <v-btn
-          class="text-blue-darken-2 text-none text-body-1 d-none d-lg-flex"
-          :to="{ name: 'login' }"
-        >
-          Iniciar sesión
-        </v-btn>
+        <div class="d-flex" v-if="isAuth">
+          <v-btn
+            class="text-blue-darken-2 text-none text-body-1 d-none d-lg-flex"
+            :to="{ name: 'manage-houses' }"
+          >
+            Administración
+          </v-btn>
+          <v-btn
+            class="text-blue-darken-2 text-none text-body-1 d-none d-lg-flex"
+          >
+            Cerrar sesión
+          </v-btn>
+        </div>
+        <div class="d-flex" v-else>
+          <v-btn
+            class="text-blue-darken-2 text-none text-body-1 d-none d-lg-flex"
+            :to="{ name: 'home' }"
+          >
+            Inicio
+          </v-btn>
+          <v-btn
+            class="text-blue-darken-2 text-none text-body-1 d-none d-lg-flex"
+            :to="{ name: 'login' }"
+          >
+            Iniciar sesión
+          </v-btn>
+        </div>
       </template>
     </v-app-bar>
 
@@ -78,7 +100,11 @@
 <script setup>
 import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { useAuthStore } from "./stores/auth";
+import { storeToRefs } from "pinia";
 
+const auth = useAuthStore();
+const { isAuth } = storeToRefs(auth);
 const router = useRouter();
 const menu = ref(false);
 

@@ -5,8 +5,8 @@ import { signInWithEmailAndPassword, onAuthStateChanged } from "firebase/auth";
 
 export const useAuthStore = defineStore("authStore", () => {
   const auth = useFirebaseAuth();
-  const errorMsg = ref(null);
-  const authUser = ref({});
+  const errorMsg = ref("");
+  const authUser = ref(null);
   const errorCodes = {
     "auth/invalid-credential": "Credenciales no válidas",
   };
@@ -33,9 +33,13 @@ export const useAuthStore = defineStore("authStore", () => {
   const hasError = computed(() => {
     return errorMsg.value;
   });
+  const isAuth = computed(() => {
+    return authUser.value;
+  });
 
   return {
     login,
     hasError,
+    isAuth,
   };
 });
