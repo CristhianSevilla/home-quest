@@ -27,7 +27,7 @@
               >Administración</v-list-item
             >
             <v-divider></v-divider>
-            <v-list-item>Cerrar sesión</v-list-item>
+            <v-list-item @click="logout">Cerrar sesión</v-list-item>
           </v-list>
           <v-list v-else>
             <v-list-item @click="navigateTo('home')">Inicio</v-list-item>
@@ -62,6 +62,7 @@
           </v-btn>
           <v-btn
             class="text-blue-darken-2 text-none text-body-1 d-none d-lg-flex"
+            @click="auth.logout"
           >
             Cerrar sesión
           </v-btn>
@@ -114,5 +115,9 @@ const currentYear = new Date().getFullYear();
 const navigateTo = (routeName) => {
   router.push({ name: routeName });
   menu.value = false; // Cierra el menú después de la navegación
+};
+const logout = () => {
+  auth.logout();
+  menu.value = false;
 };
 </script>

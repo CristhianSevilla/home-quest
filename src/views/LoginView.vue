@@ -10,7 +10,6 @@
           label="Correo"
           placeholder="Ingresa tu correo electrónico"
           variant="outlined"
-          clearable
           class="mb-2"
           color="light-blue-darken-2"
           density="compact"
