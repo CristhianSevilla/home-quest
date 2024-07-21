@@ -10,14 +10,12 @@
     >
       <div class="position-relative fill-height w-100 overflow-hidden">
         <v-main>
-          <v-container>
-            <RouterView />
-          </v-container>
+          <RouterView />
         </v-main>
       </div>
     </div>
     <!-- Footer -->
-    <Footer :isLoginRoute="isLoginRoute" />
+    <!-- <Footer :isLoginRoute="isLoginRoute" /> -->
   </v-app>
 </template>
 
