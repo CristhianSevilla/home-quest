@@ -5,7 +5,6 @@ import { uid } from "uid";
 import { usePropertiesStore } from "@/stores/properties";
 
 export default function useImage() {
-  const propertiesStore = usePropertiesStore();
   const storage = useFirebaseStorage();
   const storageRefPath = storageRef(storage, `/properties/${uid()}.jpg`);
   const { url, upload } = useStorageFile(storageRefPath);

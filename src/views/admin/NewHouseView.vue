@@ -44,7 +44,7 @@
             style="max-width: 400px"
             v-if="imageURL"
           >
-            <p class="font-weight-bold">Image Propiedad:</p>
+            <p class="font-weight-bold">Imagen Propiedad:</p>
             <img
               :src="imageURL"
               alt="Imagen de la propiedad"
@@ -131,19 +131,21 @@
               />
             </v-col>
           </v-row>
-          <div style="height: 600px; width: 800px">
-            <l-map
-              ref="map"
-              v-model:zoom="zoom"
-              :center="[47.41322, -1.219482]"
-              :use-global-leaflet="false"
-            >
-              <l-tile-layer
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-                layer-type="base"
-                name="OpenStreetMap"
-              ></l-tile-layer>
-            </l-map>
+          <p class="text-center font-weight-bold mt-3">Ubicación:</p>
+
+          <div class="pt-2 pb-8">
+            <div style="height: 400px">
+              <l-map
+                v-model:zoom="zoom"
+                :center="center"
+                :use-global-leaflet="false"
+              >
+                <l-marker :lat-lng="center" draggable @moveend="pin" />
+                <l-tile-layer
+                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                ></l-tile-layer>
+              </l-map>
+            </div>
           </div>
           <v-btn
             size="large"
@@ -162,7 +164,6 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
 import { useForm, useField } from "vee-validate";
 import { validationSchema, imageSchema } from "@/validation/propertySchema";
 import { collection, addDoc } from "firebase/firestore";
@@ -170,15 +171,16 @@ import { useFirestore } from "vuefire";
 import { useRouter } from "vue-router";
 import { usePropertiesStore } from "@/stores/properties";
 import useImage from "@/composables/useImage";
+import useLocationMap from "@/composables/useLocationMap";
 import "leaflet/dist/leaflet.css";
-import { LMap, LTileLayer } from "@vue-leaflet/vue-leaflet";
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 
-const items = [1, 2, 3, 4, 5];
+const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const propertiesStore = usePropertiesStore();
 const router = useRouter();
 const db = useFirestore();
 const { url, uploadImage, imageURL } = useImage();
-const zoom = ref(15);
+const { zoom, center, pin } = useLocationMap();
 
 const { handleSubmit } = useForm({
   validationSchema: {
@@ -208,6 +210,7 @@ const submit = handleSubmit(async (values) => {
   const docRef = await addDoc(collection(db, "properties"), {
     ...property,
     image: url.value,
+    location: center.value,
   });
   propertiesStore.spinner = false;
 
