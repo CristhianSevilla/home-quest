@@ -1,7 +1,7 @@
 <template>
   <v-footer
     :class="[
-      'd-flex justify-center align-center absolute bottom-0 left-0 w-100',
+      'd-flex justify-center align-center absolute bottom-0 left-0 w-100 text-h6',
       isLoginRoute ? 'bg-transparent' : 'bg-white',
     ]"
   >

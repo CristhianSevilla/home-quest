@@ -1,6 +1,6 @@
 <template>
   <v-container class="d-flex justify-center align-center">
-    <v-card class="pa-5" elevation="5" width="344">
+    <v-card class="pa-8" elevation="5" width="400">
       <v-card-title class="mb-3 text-center text-grey-darken-2"
         >Iniciar sesión</v-card-title
       >
