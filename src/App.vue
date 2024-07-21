@@ -3,7 +3,7 @@
     <!-- Video de fondo (solo en la ruta /login) -->
     <BackgroundVideo v-if="isLoginRoute" />
     <!-- Barra de navegación -->
-    <NavBar />
+    <NavBar :isLoginRoute="isLoginRoute" />
     <!-- Contenido -->
     <div
       class="d-flex justify-center align-center fill-height w-100 position-relative"
@@ -17,7 +17,7 @@
       </div>
     </div>
     <!-- Footer -->
-    <Footer />
+    <Footer :isLoginRoute="isLoginRoute" />
   </v-app>
 </template>
 
