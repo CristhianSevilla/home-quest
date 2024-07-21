@@ -140,9 +140,11 @@ import { validationSchema, imageSchema } from "@/validation/propertySchema";
 import { collection, addDoc } from "firebase/firestore";
 import { useFirestore } from "vuefire";
 import { useRouter } from "vue-router";
+import { usePropertiesStore } from "@/stores/properties";
 
 const items = [1, 2, 3, 4, 5];
 
+const propertiesStore = usePropertiesStore();
 const router = useRouter();
 const db = useFirestore();
 
@@ -168,11 +170,14 @@ const garden = useField("garden", null, {
 });
 
 const submit = handleSubmit(async (values) => {
+  propertiesStore.spinner = true;
   const { image, ...property } = values;
 
   const docRef = await addDoc(collection(db, "properties"), {
     ...property,
   });
+  propertiesStore.spinner = false;
+
   if (docRef.id) {
     router.push({ name: "manage-houses" });
   }

@@ -16,6 +16,7 @@
     </div>
     <!-- Footer -->
     <!-- <Footer :isLoginRoute="isLoginRoute" /> -->
+    <spinner v-if="showSpinner" />
   </v-app>
 </template>
 
@@ -25,7 +26,11 @@ import { useRoute } from "vue-router";
 import NavBar from "./components/NavBar.vue";
 import Footer from "./components/Footer.vue";
 import BackgroundVideo from "./components/BackgroundVideo.vue";
+import Spinner from "./components/Spinner.vue";
+import { usePropertiesStore } from "@/stores/properties";
 
+const propertiesStore = usePropertiesStore();
 const route = useRoute();
 const isLoginRoute = computed(() => route.path === "/login");
+const showSpinner = computed(() => propertiesStore.spinner);
 </script>
