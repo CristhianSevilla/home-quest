@@ -137,8 +137,14 @@
 <script setup>
 import { useForm, useField } from "vee-validate";
 import { validationSchema, imageSchema } from "@/validation/propertySchema";
+import { collection, addDoc } from "firebase/firestore";
+import { useFirestore } from "vuefire";
+import { useRouter } from "vue-router";
 
 const items = [1, 2, 3, 4, 5];
+
+const router = useRouter();
+const db = useFirestore();
 
 const { handleSubmit } = useForm({
   validationSchema: {
@@ -154,11 +160,22 @@ const bedrooms = useField("bedrooms");
 const bathrooms = useField("bathrooms");
 const parkingSpaces = useField("parkingSpaces");
 const description = useField("description");
-const pool = useField("pool");
-const garden = useField("garden");
+const pool = useField("pool", null, {
+  initialValue: false,
+});
+const garden = useField("garden", null, {
+  initialValue: false,
+});
 
-const submit = handleSubmit((values) => {
-  console.log(values);
+const submit = handleSubmit(async (values) => {
+  const { image, ...property } = values;
+
+  const docRef = await addDoc(collection(db, "properties"), {
+    ...property,
+  });
+  if (docRef.id) {
+    router.push({ name: "manage-houses" });
+  }
 });
 </script>
 
