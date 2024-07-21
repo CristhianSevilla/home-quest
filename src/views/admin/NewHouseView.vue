@@ -1,6 +1,8 @@
 <template>
-  <div class="background-image"></div>
-  <div class="content">
+  <div class="background-image position-fixed top-0 left-0 w-100 h-100"></div>
+  <div
+    class="position-relative elevation-1 w-100 d-flex justify-center align-center pa-8"
+  >
     <v-container>
       <v-card max-width="800" flat class="mx-auto py-5 px-10">
         <v-card-title
@@ -17,7 +19,6 @@
             label="Título propiedad"
             placeholder="Ingresa el título de la propiedad"
             variant="outlined"
-            class="mb-2"
             color="light-blue-darken-2"
             density="compact"
             clearable
@@ -27,7 +28,6 @@
             label="Imagen"
             placeholder="Ingresa el título propiedad"
             variant="outlined"
-            class="mb-2"
             color="light-blue-darken-2"
             density="compact"
             prepend-icon="mdi-camera"
@@ -37,41 +37,39 @@
             label="Precio"
             placeholder="Ingresa el precio de la propiedad"
             variant="outlined"
-            class="mb-2"
+            class="mb-3"
             color="light-blue-darken-2"
             density="compact"
             clearable
           />
           <v-row>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" class="py-0">
               <v-select
                 label="Habitaciones"
                 variant="outlined"
                 density="compact"
                 color="light-blue-darken-2"
-                class="mb-2"
                 clearable
                 :items="items"
               />
             </v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" class="py-0">
               <v-select
                 label="Baños"
                 variant="outlined"
                 density="compact"
                 color="light-blue-darken-2"
-                class="mb-2"
                 clearable
                 :items="items"
               />
             </v-col>
-            <v-col cols="12" md="4">
+            <v-col cols="12" md="4" class="py-0">
               <v-select
                 label="Lugares estacionamiento"
                 variant="outlined"
                 density="compact"
                 color="light-blue-darken-2"
-                class="mb-2"
+                class="mb-3"
                 clearable
                 :items="items"
               />
@@ -84,7 +82,11 @@
             label="Descripción"
             clearable
           />
-          <v-checkbox label="Alberca" />
+          <v-checkbox
+            density="compact"
+            label="Alberca"
+            color="light-blue-darken-2"
+          />
           <v-btn
             size="large"
             color="light-blue-darken-2"
@@ -107,23 +109,9 @@ const items = [1, 2, 3, 4, 5];
 
 <style scoped>
 .background-image {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
   background-image: url("/img/new-house.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-}
-.content {
-  position: relative;
-  z-index: 1;
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 2rem;
 }
 </style>
