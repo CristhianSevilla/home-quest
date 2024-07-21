@@ -34,11 +34,24 @@
             color="light-blue-darken-2"
             density="compact"
             prepend-icon="mdi-camera"
-            clearable
-            class="mb-2"
+            :class="imageURL ? 'mb-0' : 'mb-2'"
             v-model="image.value.value"
             :error-messages="image.errorMessage.value"
+            @change="uploadImage"
           />
+          <div
+            class="w-100 overflow-hidden mb-3"
+            style="max-width: 400px"
+            v-if="imageURL"
+          >
+            <p class="font-weight-bold">Image Propiedad:</p>
+            <img
+              :src="imageURL"
+              alt="Imagen de la propiedad"
+              class="w-100"
+              style="height: auto; object-fit: contain"
+            />
+          </div>
           <v-text-field
             label="Precio"
             placeholder="Ingresa el precio de la propiedad"
@@ -141,12 +154,13 @@ import { collection, addDoc } from "firebase/firestore";
 import { useFirestore } from "vuefire";
 import { useRouter } from "vue-router";
 import { usePropertiesStore } from "@/stores/properties";
+import useImage from "@/composables/useImage";
 
 const items = [1, 2, 3, 4, 5];
-
 const propertiesStore = usePropertiesStore();
 const router = useRouter();
 const db = useFirestore();
+const { url, uploadImage, imageURL } = useImage();
 
 const { handleSubmit } = useForm({
   validationSchema: {
@@ -175,6 +189,7 @@ const submit = handleSubmit(async (values) => {
 
   const docRef = await addDoc(collection(db, "properties"), {
     ...property,
+    image: url.value,
   });
   propertiesStore.spinner = false;
 
