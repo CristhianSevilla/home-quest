@@ -22,6 +22,9 @@
             color="light-blue-darken-2"
             density="compact"
             clearable
+            class="mb-2"
+            v-model="title.value.value"
+            :error-messages="title.errorMessage.value"
           />
           <v-file-input
             accept="image/jpeg"
@@ -32,15 +35,20 @@
             density="compact"
             prepend-icon="mdi-camera"
             clearable
+            class="mb-2"
+            v-model="image.value.value"
+            :error-messages="image.errorMessage.value"
           />
           <v-text-field
             label="Precio"
             placeholder="Ingresa el precio de la propiedad"
             variant="outlined"
-            class="mb-3"
+            class="mb-5"
             color="light-blue-darken-2"
             density="compact"
             clearable
+            v-model="price.value.value"
+            :error-messages="price.errorMessage.value"
           />
           <v-row>
             <v-col cols="12" md="4" class="py-0">
@@ -50,7 +58,10 @@
                 density="compact"
                 color="light-blue-darken-2"
                 clearable
+                class="mb-2"
                 :items="items"
+                v-model="bedrooms.value.value"
+                :error-messages="bedrooms.errorMessage.value"
               />
             </v-col>
             <v-col cols="12" md="4" class="py-0">
@@ -60,7 +71,10 @@
                 density="compact"
                 color="light-blue-darken-2"
                 clearable
+                class="mb-2"
                 :items="items"
+                v-model="bathrooms.value.value"
+                :error-messages="bathrooms.errorMessage.value"
               />
             </v-col>
             <v-col cols="12" md="4" class="py-0">
@@ -69,9 +83,11 @@
                 variant="outlined"
                 density="compact"
                 color="light-blue-darken-2"
-                class="mb-3"
+                class="mb-5"
                 clearable
                 :items="items"
+                v-model="parkingSpaces.value.value"
+                :error-messages="parkingSpaces.errorMessage.value"
               />
             </v-col>
           </v-row>
@@ -81,12 +97,27 @@
             color="light-blue-darken-2"
             label="Descripción"
             clearable
+            v-model="description.value.value"
+            :error-messages="description.errorMessage.value"
           />
-          <v-checkbox
-            density="compact"
-            label="Alberca"
-            color="light-blue-darken-2"
-          />
+          <v-row>
+            <v-col class="py-0">
+              <v-checkbox
+                density="compact"
+                label="Alberca"
+                color="light-blue-darken-2"
+                v-model="pool.value.value"
+              />
+            </v-col>
+            <v-col class="py-0">
+              <v-checkbox
+                density="compact"
+                label="Jardin/Patio"
+                color="light-blue-darken-2"
+                v-model="garden.value.value"
+              />
+            </v-col>
+          </v-row>
           <v-btn
             size="large"
             color="light-blue-darken-2"
@@ -104,7 +135,31 @@
 </template>
 
 <script setup>
+import { useForm, useField } from "vee-validate";
+import { validationSchema, imageSchema } from "@/validation/propertySchema";
+
 const items = [1, 2, 3, 4, 5];
+
+const { handleSubmit } = useForm({
+  validationSchema: {
+    ...validationSchema,
+    ...imageSchema,
+  },
+});
+
+const title = useField("title");
+const image = useField("image");
+const price = useField("price");
+const bedrooms = useField("bedrooms");
+const bathrooms = useField("bathrooms");
+const parkingSpaces = useField("parkingSpaces");
+const description = useField("description");
+const pool = useField("pool");
+const garden = useField("garden");
+
+const submit = handleSubmit((values) => {
+  console.log(values);
+});
 </script>
 
 <style scoped>
