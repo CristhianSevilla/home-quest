@@ -27,21 +27,13 @@
       </div>
     </div>
 
-    <v-footer
-      class="d-flex justify-center align-center bg-transparent absolute bottom-0 left-0 w-100"
-    >
-      <span class="text-white text-center">
-        © {{ currentYear }} HomeQuest. Todos los derechos reservados.
-      </span>
-    </v-footer>
+    <Footer />
   </v-app>
 </template>
 
 <script setup>
 import NavBar from "./components/NavBar.vue";
-
-// Obtener el año actual
-const currentYear = new Date().getFullYear();
+import Footer from "./components/Footer.vue";
 </script>
 
 <style scoped>
