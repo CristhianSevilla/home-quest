@@ -36,7 +36,31 @@ export const validationSchema = {
 
 export const imageSchema = {
   image(value) {
-    if (value) return true;
-    return "La imagen es obligatoria";
+    return validateImage(value, "La imagen es obligatoria");
+  },
+  interiorImage(value) {
+    return validateImage(value, "La imagen interior es obligatoria");
+  },
+  poolImage(value) {
+    return validateImage(value, "La imagen de la alberca es obligatoria");
   },
 };
+
+function validateImage(file, emptyMessage) {
+  if (!file) {
+    return emptyMessage;
+  }
+
+  const maxSizeInBytes = 1 * 1024 * 1024; // 1MB
+  const allowedTypes = ["image/jpeg", "image/jpg"];
+
+  if (!allowedTypes.includes(file.type)) {
+    return "La imagen debe ser de tipo JPG";
+  }
+
+  if (file.size > maxSizeInBytes) {
+    return "La imagen no debe pesar más de 1MB";
+  }
+
+  return true;
+}

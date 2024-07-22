@@ -26,37 +26,72 @@
             v-model="title.value.value"
             :error-messages="title.errorMessage.value"
           />
-          <v-file-input
-            accept="image/jpeg"
-            label="Imagen"
-            placeholder="Ingresa el título propiedad"
-            variant="outlined"
-            color="light-blue-darken-2"
-            density="compact"
-            prepend-icon="mdi-camera"
-            :class="imageURL ? 'mb-0' : 'mb-2'"
-            v-model="image.value.value"
-            :error-messages="image.errorMessage.value"
-            @change="uploadImage"
-          />
-          <div
-            class="w-100 overflow-hidden mb-3"
-            style="max-width: 400px"
-            v-if="imageURL"
-          >
-            <p class="font-weight-bold">Imagen Propiedad:</p>
-            <img
-              :src="imageURL"
-              alt="Imagen de la propiedad"
-              class="w-100"
-              style="height: auto; object-fit: contain"
-            />
-          </div>
+          <v-row class="mt-2">
+            <v-col cols="12" md="6" class="py-0">
+              <v-file-input
+                show-size
+                accept="image/jpeg"
+                label="Imagen Propiedad"
+                variant="outlined"
+                color="light-blue-darken-2"
+                density="compact"
+                prepend-icon="mdi-camera"
+                :class="propertyImageURL ? 'mb-0' : 'mb-2'"
+                v-model="image.value.value"
+                :error-messages="image.errorMessage.value"
+                @change="uploadPropertyImage"
+              />
+              <div
+                class="w-100 overflow-hidden mb-3"
+                style="max-width: 400px"
+                v-if="propertyImageURL"
+              >
+                <p class="font-weight-bold">Imagen Propiedad:</p>
+                <img
+                  :src="propertyImageURL"
+                  alt="Imagen de la propiedad"
+                  class="w-100"
+                  style="height: auto; object-fit: contain"
+                />
+              </div>
+            </v-col>
+            <v-col cols="12" md="6" class="py-0">
+              <v-file-input
+                show-size
+                accept="image/jpeg"
+                label="Imagen Interior (Recámara/Comedor)"
+                variant="outlined"
+                color="light-blue-darken-2"
+                density="compact"
+                prepend-icon="mdi-camera"
+                :class="interiorImageURL ? 'mb-0' : 'mb-2'"
+                v-model="interiorImage.value.value"
+                :error-messages="interiorImage.errorMessage.value"
+                @change="uploadInteriorImage"
+              />
+              <div
+                class="w-100 overflow-hidden mb-3"
+                style="max-width: 400px"
+                v-if="interiorImageURL"
+              >
+                <p class="font-weight-bold">
+                  Imagen Interior (Recámara/Comedor):
+                </p>
+                <img
+                  :src="interiorImageURL"
+                  alt="Imagen de la propiedad"
+                  class="w-100"
+                  style="height: auto; object-fit: contain"
+                />
+              </div>
+            </v-col>
+          </v-row>
+
           <v-text-field
             label="Precio"
             placeholder="Ingresa el precio de la propiedad"
             variant="outlined"
-            class="mb-5"
+            class="mb-5 mt-2"
             color="light-blue-darken-2"
             density="compact"
             clearable
@@ -114,7 +149,7 @@
             :error-messages="description.errorMessage.value"
           />
           <v-row>
-            <v-col class="py-0">
+            <v-col class="py-0 mt-2">
               <v-checkbox
                 density="compact"
                 label="Alberca"
@@ -131,8 +166,35 @@
               />
             </v-col>
           </v-row>
-          <p class="text-center font-weight-bold mt-3">Ubicación:</p>
+          <v-file-input
+            v-if="pool.value.value"
+            show-size
+            accept="image/jpeg"
+            label="Imagen Alberca"
+            variant="outlined"
+            color="light-blue-darken-2"
+            density="compact"
+            prepend-icon="mdi-camera"
+            :class="poolImageURL ? 'mb-0' : 'mb-2'"
+            v-model="poolImage.value.value"
+            :error-messages="poolImage.errorMessage.value"
+            @change="uploadPoolImage"
+          />
+          <div
+            class="w-100 overflow-hidden mb-3"
+            style="max-width: 400px"
+            v-if="poolImageURL"
+          >
+            <p class="font-weight-bold">Imagen Alberca:</p>
+            <img
+              :src="poolImageURL"
+              alt="Imagen de la alberca"
+              class="w-100"
+              style="height: auto; object-fit: contain"
+            />
+          </div>
 
+          <p class="text-center font-weight-bold mt-3">Ubicación:</p>
           <div class="pt-2 pb-8">
             <div style="height: 400px">
               <l-map
@@ -179,7 +241,14 @@ const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const propertiesStore = usePropertiesStore();
 const router = useRouter();
 const db = useFirestore();
-const { url, uploadImage, imageURL } = useImage();
+const {
+  uploadPropertyImage,
+  uploadPoolImage,
+  uploadInteriorImage,
+  propertyImageURL,
+  poolImageURL,
+  interiorImageURL,
+} = useImage();
 const { zoom, center, pin } = useLocationMap();
 
 const { handleSubmit } = useForm({
@@ -191,6 +260,7 @@ const { handleSubmit } = useForm({
 
 const title = useField("title");
 const image = useField("image");
+const interiorImage = useField("interiorImage");
 const price = useField("price");
 const bedrooms = useField("bedrooms");
 const bathrooms = useField("bathrooms");
@@ -202,6 +272,7 @@ const pool = useField("pool", null, {
 const garden = useField("garden", null, {
   initialValue: false,
 });
+const poolImage = useField("poolImage");
 
 const submit = handleSubmit(async (values) => {
   propertiesStore.spinner = true;
