@@ -177,6 +177,7 @@
             color="light-blue-darken-2"
             density="compact"
             prepend-icon="mdi-camera"
+            :clearable="false"
             :class="poolImageURL ? 'mb-0' : 'mb-2'"
             v-model="poolImage.value.value"
             :error-messages="poolImage.errorMessage.value"
@@ -278,11 +279,13 @@ const poolImage = useField("poolImage");
 
 const submit = handleSubmit(async (values) => {
   propertiesStore.spinner = true;
-  const { image, ...property } = values;
+  const { image, interiorImage, poolImage, ...property } = values;
 
   const docRef = await addDoc(collection(db, "properties"), {
     ...property,
-    image: url.value,
+    image: propertyImageURL.value,
+    interiorImage: interiorImageURL.value,
+    poolImage: poolImageURL.value,
     location: center.value,
   });
   propertiesStore.spinner = false;
