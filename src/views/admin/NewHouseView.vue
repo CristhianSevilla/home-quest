@@ -36,21 +36,22 @@
                 color="light-blue-darken-2"
                 density="compact"
                 prepend-icon="mdi-camera"
+                :clearable="false"
                 :class="propertyImageURL ? 'mb-0' : 'mb-2'"
                 v-model="image.value.value"
                 :error-messages="image.errorMessage.value"
                 @change="uploadPropertyImage"
               />
-              <div
-                class="w-100 overflow-hidden mb-3"
-                style="max-width: 400px"
-                v-if="propertyImageURL"
-              >
-                <p class="font-weight-bold">Imagen Propiedad:</p>
+              <div class="w-100 overflow-hidden mb-3" style="max-width: 400px">
+                <p class="font-weight-bold mb-2">Imagen Propiedad:</p>
                 <img
-                  :src="propertyImageURL"
+                  :src="
+                    propertyImageURL
+                      ? propertyImageURL
+                      : '/img/default-property-image.jpg'
+                  "
                   alt="Imagen de la propiedad"
-                  class="w-100"
+                  class="w-100 rounded"
                   style="height: auto; object-fit: contain"
                 />
               </div>
@@ -64,23 +65,24 @@
                 color="light-blue-darken-2"
                 density="compact"
                 prepend-icon="mdi-camera"
+                :clearable="false"
                 :class="interiorImageURL ? 'mb-0' : 'mb-2'"
                 v-model="interiorImage.value.value"
                 :error-messages="interiorImage.errorMessage.value"
                 @change="uploadInteriorImage"
               />
-              <div
-                class="w-100 overflow-hidden mb-3"
-                style="max-width: 400px"
-                v-if="interiorImageURL"
-              >
-                <p class="font-weight-bold">
+              <div class="w-100 overflow-hidden mb-3" style="max-width: 400px">
+                <p class="font-weight-bold mb-2">
                   Imagen Interior (Recámara/Comedor):
                 </p>
                 <img
-                  :src="interiorImageURL"
+                  :src="
+                    interiorImageURL
+                      ? interiorImageURL
+                      : '/img/default-interior-image.jpg'
+                  "
                   alt="Imagen de la propiedad"
-                  class="w-100"
+                  class="w-100 rounded"
                   style="height: auto; object-fit: contain"
                 />
               </div>
@@ -181,15 +183,15 @@
             @change="uploadPoolImage"
           />
           <div
+            v-if="pool.value.value"
             class="w-100 overflow-hidden mb-3"
             style="max-width: 400px"
-            v-if="poolImageURL"
           >
-            <p class="font-weight-bold">Imagen Alberca:</p>
+            <p class="font-weight-bold mb-2">Imagen Alberca:</p>
             <img
-              :src="poolImageURL"
+              :src="poolImageURL ? poolImageURL : '/img/default-pool-image.jpg'"
               alt="Imagen de la alberca"
-              class="w-100"
+              class="w-100 rounded"
               style="height: auto; object-fit: contain"
             />
           </div>
