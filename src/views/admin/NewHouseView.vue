@@ -88,18 +88,35 @@
               </div>
             </v-col>
           </v-row>
+          <v-row class="mt-2">
+            <v-col cols="12" md="6" class="py-0">
+              <v-text-field
+                label="Precio"
+                placeholder="Ingresa el precio de la propiedad"
+                variant="outlined"
+                class="mb-5 mt-2"
+                color="light-blue-darken-2"
+                density="compact"
+                clearable
+                v-model="price.value.value"
+                :error-messages="price.errorMessage.value"
+              />
+            </v-col>
+            <v-col cols="12" md="6" class="py-0">
+              <v-text-field
+                label="Tamaño terreno"
+                placeholder="Ingresa el tamaño del terreno en m2"
+                variant="outlined"
+                class="mb-5 mt-2"
+                color="light-blue-darken-2"
+                density="compact"
+                clearable
+                v-model="lotSize.value.value"
+                :error-messages="lotSize.errorMessage.value"
+              />
+            </v-col>
+          </v-row>
 
-          <v-text-field
-            label="Precio"
-            placeholder="Ingresa el precio de la propiedad"
-            variant="outlined"
-            class="mb-5 mt-2"
-            color="light-blue-darken-2"
-            density="compact"
-            clearable
-            v-model="price.value.value"
-            :error-messages="price.errorMessage.value"
-          />
           <v-row>
             <v-col cols="12" md="4" class="py-0">
               <v-select
@@ -150,8 +167,8 @@
             v-model="description.value.value"
             :error-messages="description.errorMessage.value"
           />
-          <v-row>
-            <v-col class="py-0 mt-2">
+          <v-row class="mt-2">
+            <v-col class="py-0">
               <v-checkbox
                 density="compact"
                 label="Alberca"
@@ -265,6 +282,7 @@ const title = useField("title");
 const image = useField("image");
 const interiorImage = useField("interiorImage");
 const price = useField("price");
+const lotSize = useField("lotSize");
 const bedrooms = useField("bedrooms");
 const bathrooms = useField("bathrooms");
 const parkingSpaces = useField("parkingSpaces");
