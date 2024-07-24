@@ -4,7 +4,7 @@ export const validationSchema = {
       return "El título de la propiedad es requerido";
     } else if (value.length < 8) {
       return "El título debe tener al menos 8 caracteres";
-    } else if (/[^a-zA-Z0-9\s]/.test(value)) {
+    } else if (/[^a-zA-Z0-9\sñÑ]/.test(value)) {
       return "El título solo puede contener letras, números y espacios";
     }
     return true;
@@ -66,9 +66,9 @@ export const imageSchema = {
   interiorImage(value) {
     return validateImage(value, "La imagen del interior es requerida");
   },
-  poolImage(value) {
-    return validateImage(value, "La imagen de la alberca es requerida");
-  },
+  // poolImage(value) {
+  //   return validateImage(value, "La imagen de la alberca es requerida");
+  // },
 };
 
 function validateImage(file, emptyMessage) {

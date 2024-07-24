@@ -1,5 +1,5 @@
 <template>
-  <v-app class="bg-grey-lighten-4 position-relative">
+  <v-app class="bg-green-lighten-5 position-relative">
     <!-- Video de fondo (solo en la ruta /login) -->
     <BackgroundVideo v-if="isLoginRoute" />
     <!-- Barra de navegación -->

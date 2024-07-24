@@ -1,7 +1,8 @@
 <template>
   <v-container class="d-flex justify-center align-center">
     <v-card class="pa-8" elevation="5" width="400">
-      <v-card-title class="mb-3 text-center text-grey-darken-2"
+      <v-card-title
+        class="mb-3 text-center font-weight-bold text-uppercase text-light-green-darken-2"
         >Iniciar sesión</v-card-title
       >
       <v-form>
@@ -50,7 +51,7 @@
         <v-btn
           class="mt-3"
           size="large"
-          color="light-blue-darken-2"
+          color="light-green-darken-2"
           type="submit"
           variant="elevated"
           block

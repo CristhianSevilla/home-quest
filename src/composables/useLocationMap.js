@@ -6,7 +6,7 @@ import { usePropertiesStore } from "@/stores/properties";
 
 export default function useLocationMap() {
   const zoom = ref(12);
-  const center = ref([20.6574684, -105.240449]);
+  const center = ref([20.2033293, -87.4585932]);
 
   function pin(e) {
     const marker = e.target.getLatLng();
