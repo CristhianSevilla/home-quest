@@ -46,7 +46,7 @@
                   <v-file-input
                     show-size
                     accept="image/jpeg"
-                    label="Imagen propiedad*"
+                    label="Imagen Propiedad*"
                     variant="outlined"
                     color="light-green-darken-2"
                     density="compact"
@@ -298,7 +298,12 @@
 import { ref, computed } from "vue";
 import { useDisplay } from "vuetify";
 import { useForm, useField } from "vee-validate";
-import { validationSchema, imageSchema } from "@/validation/propertySchema";
+import {
+  validationSchemaStep1,
+  validationSchemaStep2,
+  imageSchemaStep1,
+  imageSchemaStep2,
+} from "@/validation/propertySchema";
 import { collection, addDoc } from "firebase/firestore";
 import { useFirestore } from "vuefire";
 import { useRouter } from "vue-router";
@@ -324,8 +329,10 @@ const { zoom, center, pin } = useLocationMap();
 
 const { handleSubmit } = useForm({
   validationSchema: {
-    ...validationSchema,
-    ...imageSchema,
+    ...validationSchemaStep1,
+    ...validationSchemaStep2,
+    ...imageSchemaStep1,
+    ...imageSchemaStep2,
   },
 });
 
