@@ -53,9 +53,10 @@
   </v-app-bar>
 
   <v-navigation-drawer
+    v-if="isSmAndDown"
     app
     v-model="drawer"
-    class="d-md-none bg-green-lighten-5"
+    class="hidden-md-and-up bg-green-lighten-5"
   >
     <v-list class="d-md-none">
       <v-list-item
@@ -90,25 +91,35 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import { useRouter } from "vue-router";
 import { useAuthStore } from "@/stores/auth";
 import { storeToRefs } from "pinia";
+import { useDisplay } from "vuetify";
 
 const auth = useAuthStore();
 const { isAuth } = storeToRefs(auth);
 const router = useRouter();
 const drawer = ref(false);
 
+// Acceso al breakpoint de Vuetify
+const { smAndDown } = useDisplay();
+const isSmAndDown = computed(() => smAndDown.value);
+
 // Función para cerrar el menú y navegar
 const navigateTo = (routeName) => {
   router.push({ name: routeName });
   drawer.value = false; // Cierra el menú después de la navegación
 };
+
 const logout = () => {
   auth.logout();
   drawer.value = false;
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.text-withe {
+  color: white;
+}
+</style>

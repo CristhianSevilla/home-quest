@@ -1,11 +1,11 @@
 import { createApp } from "vue";
 import { createPinia } from "pinia";
-//Vuetify
+// Vuetify
 import "@mdi/font/css/materialdesignicons.css";
 import "vuetify/styles";
 import { createVuetify } from "vuetify";
 
-//firebase
+// Firebase
 import { VueFire, VueFireAuth } from "vuefire";
 import { firebaseApp } from "./config/firebase";
 
@@ -16,13 +16,13 @@ import * as directives from "vuetify/directives";
 
 const app = createApp(App);
 
-//Vuetify
+// Configuración de Vuetify
 const vuetify = createVuetify({
   components,
   directives,
 });
 
-//firebase
+// Configuración de Firebase
 app.use(VueFire, {
   firebaseApp,
   modules: [VueFireAuth()],
