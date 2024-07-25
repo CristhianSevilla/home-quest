@@ -2,8 +2,8 @@
   <v-app>
     <v-navigation-drawer
       class="bg-green-lighten-5 position-fixed pt-15"
+      :permanent="!isXsAndSmaller"
       app
-      :width="300"
       v-model="drawer"
       v-if="!isXsAndSmaller"
     >
