@@ -1,28 +1,22 @@
 <template>
   <div class="background-image position-fixed top-0 left-0 w-100 h-100"></div>
-  <div
-    class="position-relative elevation-1 w-100 d-flex justify-center align-center pa-8"
-  >
-    <v-container>
-      <v-card max-width="1500" flat class="mx-auto py-5 px-10">
+  <div class="position-relative w-100 d-flex justify-center align-center">
+    <v-container class="pa-4 pb-md-0">
+      <v-card flat class="mx-auto py-5 px-2">
         <v-card-title
           class="text-h5 text-light-green-darken-2 font-weight-bold"
           tag="h3"
         >
           Nueva Propiedad
         </v-card-title>
-        <v-card-subtitle class="text-h6">
+        <p class="text-h6 px-4 text-body-1 text-grey-darken-1">
           Crea una nueva propiedad llenando el siguiente formulario
-        </v-card-subtitle>
+        </p>
         <v-stepper
           color="light-green-darken-2"
           flat
-          height="600"
-          :items="[
-            'Información Básica',
-            'Detalles de la Propiedad',
-            'Amenidades y ubicación',
-          ]"
+          :height="stepperHeight"
+          :items="['Información Básica', 'Detalles y Amenidades', 'Ubicación']"
           id="scroll-target"
           class="overflow-y-auto"
         >
@@ -52,7 +46,7 @@
                   <v-file-input
                     show-size
                     accept="image/jpeg"
-                    label="Imagen Propiedad*"
+                    label="Imagen propiedad*"
                     variant="outlined"
                     color="light-green-darken-2"
                     density="compact"
@@ -62,7 +56,7 @@
                     :error-messages="image.errorMessage.value"
                     @change="uploadPropertyImage"
                   />
-                  <div class="px-5 mt-2 mb-4">
+                  <div class="px-md-5 px-lg-10 px-xl-16 mt-2 mb-4 mb-lg-0">
                     <v-card class="w-100">
                       <v-img
                         :src="
@@ -80,7 +74,7 @@
                   <v-file-input
                     show-size
                     accept="image/jpeg"
-                    label="Imagen Interior (Recámara/Comedor)*"
+                    label="Imagen adicional*"
                     variant="outlined"
                     color="light-green-darken-2"
                     density="compact"
@@ -90,7 +84,7 @@
                     :error-messages="interiorImage.errorMessage.value"
                     @change="uploadInteriorImage"
                   />
-                  <div class="px-5 mt-2 mb-4">
+                  <div class="px-md-5 px-lg-10 px-xl-16 mt-2 mb-4">
                     <v-card class="w-100">
                       <v-img
                         :src="
@@ -98,7 +92,7 @@
                             ? interiorImageURL
                             : '/img/default-interior-image.jpg'
                         "
-                        alt="Imagen interior"
+                        alt="Imagen adicional"
                         cover
                       />
                     </v-card>
@@ -197,9 +191,6 @@
                 :error-messages="description.errorMessage.value"
               />
             </fieldset>
-          </template>
-
-          <template v-slot:item.3>
             <fieldset class="pa-4 rounded border-light-green-darken-2 mt-4">
               <legend
                 class="text-h7 font-weight-bold text-light-green-darken-2"
@@ -227,7 +218,7 @@
                       v-model="poolImage.value.value"
                       @change="uploadPoolImage"
                     />
-                    <div class="px-5 mt-2 mb-4">
+                    <div class="px-md-5 px-lg-10 px-xl-16 mt-2 mb-4">
                       <v-card class="w-100">
                         <v-img
                           :src="
@@ -242,7 +233,6 @@
                     </div>
                   </div>
                 </v-col>
-
                 <v-col class="py-0">
                   <v-checkbox
                     density="compact"
@@ -253,6 +243,9 @@
                 </v-col>
               </v-row>
             </fieldset>
+          </template>
+
+          <template v-slot:item.3>
             <fieldset class="pa-4 rounded border-light-green-darken-2 my-4">
               <legend
                 class="text-h7 font-weight-bold text-light-green-darken-2"
@@ -302,7 +295,8 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import { useDisplay } from "vuetify";
 import { useForm, useField } from "vee-validate";
 import { validationSchema, imageSchema } from "@/validation/propertySchema";
 import { collection, addDoc } from "firebase/firestore";
@@ -373,8 +367,17 @@ const submit = handleSubmit(async (values) => {
 const offsetTop = ref(0);
 
 const onScroll = () => {
-  this.offsetTop = e.target.scrollTop;
+  offsetTop = e.target.scrollTop;
 };
+
+const { xs, sm, md, lg, xl } = useDisplay();
+
+const stepperHeight = computed(() => {
+  if (md.value) return "400px"; // Altura para mediano
+  if (lg.value) return "450px"; // Altura para grande
+  if (xl.value) return "700px"; // Altura para extra grande
+  return "600px"; // Altura por defecto
+});
 </script>
 
 <style scoped>
