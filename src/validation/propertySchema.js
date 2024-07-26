@@ -1,4 +1,4 @@
-export const validationSchemaStep1 = {
+export const validationSchema = {
   title(value) {
     if (!value) {
       return "El título de la propiedad es requerido";
@@ -9,8 +9,6 @@ export const validationSchemaStep1 = {
     }
     return true;
   },
-};
-export const validationSchemaStep2 = {
   price(value) {
     const priceRegex = /^\d+(\.\d{1,2})?$/; // Números enteros o decimales con hasta dos dígitos después del punto
     if (!value) {
@@ -61,7 +59,7 @@ export const validationSchemaStep2 = {
   },
 };
 
-export const imageSchemaStep1 = {
+export const imageSchema = {
   image(value) {
     return validateImage(value, "La imagen de la propiedad es requerida");
   },
@@ -71,11 +69,6 @@ export const imageSchemaStep1 = {
   // poolImage(value) {
   //   return validateImage(value, "La imagen de la alberca es requerida");
   // },
-};
-export const imageSchemaStep2 = {
-  poolImage(value) {
-    return validateImage(value, "La imagen de la alberca es requerida");
-  },
 };
 
 function validateImage(file, emptyMessage) {
