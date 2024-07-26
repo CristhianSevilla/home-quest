@@ -1,8 +1,10 @@
 <template>
-  <div class="background-image position-fixed top-0 left-0 w-100 h-100"></div>
+  <div
+    class="bg-light-green-lighten-4 position-fixed top-0 left-0 w-100 h-100"
+  ></div>
   <div class="position-relative w-100 d-flex justify-center align-center">
-    <v-container class="pa-4 pb-md-0">
-      <v-card flat class="mx-auto pa-2 pa-md-10">
+    <v-container class="pa-4 pa-xl-10">
+      <v-card flat class="mx-auto pa-3 pa-xl-10">
         <v-card-title
           class="text-h5 text-light-green-darken-2 font-weight-bold"
           tag="h3"
@@ -341,12 +343,6 @@ const submit = handleSubmit(async (values) => {
 </script>
 
 <style scoped>
-.background-image {
-  background-image: url("/img/admin5.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-}
 .border-light-green-darken-2 {
   border: 1px solid #9ccc65;
 }

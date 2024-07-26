@@ -9,7 +9,7 @@
     >
       <template v-slot:prepend>
         <v-list-item
-          class="font-weight-bold text-light-green-darken-4 text-uppercase"
+          class="font-weight-bold text-light-green-darken-4 text-center"
           lines="two"
         >
           Panel de Administración
