@@ -4,8 +4,8 @@ export const validationSchema = {
       return "El título de la propiedad es requerido";
     } else if (value.length < 8) {
       return "El título debe tener al menos 8 caracteres";
-    } else if (/[^a-zA-Z0-9\sñÑ]/.test(value)) {
-      return "El título solo puede contener letras, números y espacios";
+    } else if (/[^a-zA-Z0-9\sñÑáéíóúÁÉÍÓÚ\"\"\'\'“”]/.test(value)) {
+      return "El título solo puede contener letras, números, espacios, tildes, comillas dobles y caracteres ñÑ";
     }
     return true;
   },
