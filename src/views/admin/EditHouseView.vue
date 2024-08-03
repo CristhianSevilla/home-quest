@@ -274,6 +274,7 @@
   </div>
 </template>
 <script setup>
+import { watch } from "vue";
 import { useRoute } from "vue-router";
 import { useFirestore, useDocument } from "vuefire";
 import { updateDoc, doc } from "firebase/firestore";
@@ -322,5 +323,24 @@ const db = useFirestore();
 const docRef = doc(db, "properties", route.params.id);
 const property = useDocument(docRef);
 
+watch(property, (property) => {
+  title.value.value = property.title;
+  price.value.value = property.price;
+  lotSize.value.value = property.lotSize;
+  bedrooms.value.value = property.bedrooms;
+  bathrooms.value.value = property.bathrooms;
+  parkingSpaces.value.value = property.parkingSpaces;
+  description.value.value = property.description;
+  pool.value.value = property.pool;
+  garden.value.value = property.garden;
+  center.value = property.location;
+});
+
 const submit = handleSubmit((values) => {});
 </script>
+
+<style scoped>
+.border-light-green-darken-2 {
+  border: 1px solid #9ccc65;
+}
+</style>
