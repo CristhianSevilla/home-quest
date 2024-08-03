@@ -52,9 +52,7 @@
                   <v-card class="w-100">
                     <v-img
                       :src="
-                        propertyImageURL
-                          ? propertyImageURL
-                          : '/img/default-property-image.jpg'
+                        propertyImageURL ? propertyImageURL : property?.image
                       "
                       alt="Imagen de la propiedad"
                       cover
@@ -82,7 +80,7 @@
                       :src="
                         interiorImageURL
                           ? interiorImageURL
-                          : '/img/default-interior-image.jpg'
+                          : property?.interiorImage
                       "
                       alt="Imagen adicional"
                       cover
@@ -208,11 +206,7 @@
                   <div class="px-md-5 px-lg-10 px-xl-16 mt-2 mb-4">
                     <v-card class="w-100">
                       <v-img
-                        :src="
-                          poolImageURL
-                            ? poolImageURL
-                            : '/img/default-pool-image.jpg'
-                        "
+                        :src="poolImageURL ? poolImageURL : property?.poolImage"
                         alt="Imagen de la alberca"
                         cover
                       />
