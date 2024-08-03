@@ -269,7 +269,7 @@
 </template>
 <script setup>
 import { watch } from "vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 import { useFirestore, useDocument } from "vuefire";
 import { updateDoc, doc } from "firebase/firestore";
 import { useField, useForm } from "vee-validate";
@@ -278,8 +278,10 @@ import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
 import useImage from "@/composables/useImage";
 import useLocationMap from "@/composables/useLocationMap";
 import { validationSchema } from "@/validation/propertySchema";
+import { usePropertiesStore } from "@/stores/properties";
 
-const items = [1, 2, 3, 4, 5];
+const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
+const propertiesStore = usePropertiesStore();
 
 const {
   uploadPropertyImage,
@@ -311,8 +313,10 @@ const garden = useField("garden", null, {
   initialValue: false,
 });
 
-//Obtener la propiedad a editar
 const route = useRoute();
+const router = useRouter();
+
+//Obtener la propiedad a editar
 const db = useFirestore();
 const docRef = doc(db, "properties", route.params.id);
 const property = useDocument(docRef);
@@ -330,7 +334,36 @@ watch(property, (property) => {
   center.value = property.location;
 });
 
-const submit = handleSubmit((values) => {});
+const submit = handleSubmit(async (values) => {
+  propertiesStore.spinner = true;
+
+  const { image, interiorImage, poolImage, ...property } = values;
+
+  // Crear el objeto data con los datos de la propiedad
+  const data = {
+    ...property,
+    location: center.value,
+  };
+
+  // Agregar URLs de imágenes si están definidas
+  if (propertyImageURL.value) {
+    data.image = propertyImageURL.value;
+  }
+  if (interiorImageURL.value) {
+    data.interiorImage = interiorImageURL.value;
+  }
+  if (poolImageURL.value) {
+    data.poolImage = poolImageURL.value;
+  }
+  try {
+    await updateDoc(docRef, data);
+    router.push({ name: "manage-houses" });
+  } catch (error) {
+    console.error("Error al actualizar el documento: ", error);
+  } finally {
+    propertiesStore.spinner = false;
+  }
+});
 </script>
 
 <style scoped>
