@@ -45,7 +45,12 @@
               </v-card-subtitle>
 
               <v-card-actions>
-                <v-btn color="success" elevation="2" flat class="mr-2"
+                <v-btn
+                  color="success"
+                  elevation="2"
+                  flat
+                  class="mr-2"
+                  :to="{ name: 'edit-house', params: { id: property.id } }"
                   >Editar</v-btn
                 >
                 <v-btn color="error" elevation="2">Eliminar</v-btn>
