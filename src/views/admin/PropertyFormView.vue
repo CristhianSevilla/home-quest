@@ -9,11 +9,15 @@
           class="text-h5 text-light-green-darken-2 font-weight-bold"
           tag="h3"
         >
-          Editar Propiedad
+          {{ isEditMode ? "Editar Propiedad" : "Nueva Propiedad" }}
         </v-card-title>
 
         <p class="text-h6 px-4 text-body-1 text-grey-darken-1">
-          Edite una propiedad llenando el siguiente formulario
+          {{
+            isEditMode
+              ? "Edite una propiedad llenando el siguiente formulario"
+              : "Crea una nueva propiedad llenando el siguiente formulario"
+          }}
         </p>
 
         <v-form class="mt-5">
@@ -44,15 +48,19 @@
                   density="compact"
                   prepend-icon="mdi-camera"
                   :clearable="false"
-                  v-model="propertyImage.value.value"
-                  :error-messages="propertyImage.errorMessage.value"
+                  v-model="image.value.value"
+                  :error-messages="image.errorMessage.value"
                   @change="uploadPropertyImage"
                 />
                 <div class="px-md-5 px-lg-10 px-xl-16 mt-2 mb-4 mb-lg-0">
                   <v-card class="w-100">
                     <v-img
                       :src="
-                        propertyImageURL ? propertyImageURL : property?.image
+                        propertyImageURL
+                          ? propertyImageURL
+                          : isEditMode
+                          ? propertyEdit?.image
+                          : '/img/default-property-image.jpg'
                       "
                       alt="Imagen de la propiedad"
                       cover
@@ -80,7 +88,9 @@
                       :src="
                         interiorImageURL
                           ? interiorImageURL
-                          : property?.interiorImage
+                          : isEditMode
+                          ? propertyEdit?.interiorImage
+                          : '/img/default-interior-image.jpg'
                       "
                       alt="Imagen adicional"
                       cover
@@ -206,7 +216,13 @@
                   <div class="px-md-5 px-lg-10 px-xl-16 mt-2 mb-4">
                     <v-card class="w-100">
                       <v-img
-                        :src="poolImageURL ? poolImageURL : property?.poolImage"
+                        :src="
+                          poolImageURL
+                            ? poolImageURL
+                            : isEditMode
+                            ? propertyEdit?.poolImage
+                            : '/img/default-pool-image.jpg'
+                        "
                         alt="Imagen de la alberca"
                         cover
                       />
@@ -259,7 +275,7 @@
             type="submit"
             variant="elevated"
             block
-            text="Guardar cambios"
+            text="Agregar propiedad"
             @click="submit"
           />
         </v-form>
@@ -267,21 +283,32 @@
     </v-container>
   </div>
 </template>
+
 <script setup>
-import { watch } from "vue";
 import { useRoute, useRouter } from "vue-router";
+import { computed, watch, ref } from "vue";
 import { useFirestore, useDocument } from "vuefire";
+import { useForm, useField } from "vee-validate";
 import { updateDoc, doc } from "firebase/firestore";
-import { useField, useForm } from "vee-validate";
-import "leaflet/dist/leaflet.css";
-import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+import { validationSchema, imageSchema } from "@/validation/propertySchema";
+import { collection, addDoc } from "firebase/firestore";
+import { usePropertiesStore } from "@/stores/properties";
 import useImage from "@/composables/useImage";
 import useLocationMap from "@/composables/useLocationMap";
-import { validationSchema } from "@/validation/propertySchema";
-import { usePropertiesStore } from "@/stores/properties";
+import "leaflet/dist/leaflet.css";
+import { LMap, LTileLayer, LMarker } from "@vue-leaflet/vue-leaflet";
+
+const route = useRoute();
+const router = useRouter();
+
+const isEditMode = computed(() => {
+  return !!route.params.id;
+});
 
 const items = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10];
 const propertiesStore = usePropertiesStore();
+const db = useFirestore();
+const { zoom, center, pin } = useLocationMap();
 
 const {
   uploadPropertyImage,
@@ -292,12 +319,68 @@ const {
   interiorImageURL,
 } = useImage();
 
-const { zoom, center, pin } = useLocationMap();
+//TODO: VALIDAR SI ESTA EDITANDO O ESTA CREANDO
+const { handleSubmit } = useForm({
+  validationSchema: {
+    ...validationSchema,
+    ...imageSchema,
+  },
+});
 
-const { handleSubmit } = useForm({ validationSchema });
+let propertyEdit = ref({});
+
+// if (isEditMode.value) {
+//   const docRef = doc(db, "properties", route.params.id);
+//   propertyEdit = useDocument(docRef);
+// } else {
+//   propertyEdit = "";
+// }
+
+watch(
+  isEditMode,
+  () => {
+    if (isEditMode.value) {
+      const docRef = doc(db, "properties", route.params.id);
+      propertyEdit = useDocument(docRef);
+    }
+  },
+  { immediate: true }
+);
+
+watch(propertyEdit, (property) => {
+  if (propertyEdit.value) {
+    title.value.value = property.title;
+    price.value.value = property.price;
+    lotSize.value.value = property.lotSize;
+    bedrooms.value.value = property.bedrooms;
+    bathrooms.value.value = property.bathrooms;
+    parkingSpaces.value.value = property.parkingSpaces;
+    description.value.value = property.description;
+    pool.value.value = property.pool;
+    garden.value.value = property.garden;
+    center.value = property.location;
+  } else {
+    title.value.value = useField("title");
+    image.value.value = useField("image");
+    interiorImage.value.value = useField("interiorImage");
+    price.value.value = useField("price");
+    lotSize.value.value = useField("lotSize");
+    bedrooms.value.value = useField("bedrooms");
+    bathrooms.value.value = useField("bathrooms");
+    parkingSpaces.value.value = useField("parkingSpaces");
+    description.value.value = useField("description");
+    pool.value.value = useField("pool", null, {
+      initialValue: false,
+    });
+    poolImage.value.value = useField("poolImage");
+    garden.value.value = useField("garden", null, {
+      initialValue: false,
+    });
+  }
+});
 
 const title = useField("title");
-const propertyImage = useField("image");
+const image = useField("image");
 const interiorImage = useField("interiorImage");
 const price = useField("price");
 const lotSize = useField("lotSize");
@@ -313,55 +396,21 @@ const garden = useField("garden", null, {
   initialValue: false,
 });
 
-const route = useRoute();
-const router = useRouter();
-
-//Obtener la propiedad a editar
-const db = useFirestore();
-const docRef = doc(db, "properties", route.params.id);
-const property = useDocument(docRef);
-
-watch(property, (property) => {
-  title.value.value = property.title;
-  price.value.value = property.price;
-  lotSize.value.value = property.lotSize;
-  bedrooms.value.value = property.bedrooms;
-  bathrooms.value.value = property.bathrooms;
-  parkingSpaces.value.value = property.parkingSpaces;
-  description.value.value = property.description;
-  pool.value.value = property.pool;
-  garden.value.value = property.garden;
-  center.value = property.location;
-});
-
 const submit = handleSubmit(async (values) => {
   propertiesStore.spinner = true;
-
   const { image, interiorImage, poolImage, ...property } = values;
 
-  // Crear el objeto data con los datos de la propiedad
-  const data = {
+  const docRef = await addDoc(collection(db, "properties"), {
     ...property,
+    image: propertyImageURL.value,
+    interiorImage: interiorImageURL.value,
+    poolImage: poolImageURL.value,
     location: center.value,
-  };
+  });
+  propertiesStore.spinner = false;
 
-  // Agregar URLs de imágenes si están definidas
-  if (propertyImageURL.value) {
-    data.image = propertyImageURL.value;
-  }
-  if (interiorImageURL.value) {
-    data.interiorImage = interiorImageURL.value;
-  }
-  if (poolImageURL.value) {
-    data.poolImage = poolImageURL.value;
-  }
-  try {
-    await updateDoc(docRef, data);
+  if (docRef.id) {
     router.push({ name: "manage-houses" });
-  } catch (error) {
-    console.error("Error al actualizar el documento: ", error);
-  } finally {
-    propertiesStore.spinner = false;
   }
 });
 </script>

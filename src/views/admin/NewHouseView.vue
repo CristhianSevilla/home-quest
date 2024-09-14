@@ -4,7 +4,7 @@
   ></div>
   <div class="position-relative w-100 d-flex justify-center align-center">
     <v-container class="pa-4 pa-xl-10">
-      <v-card flat class="mx-auto pa-3 pa-xl-10">
+      <v-card flat class="mx-auto pa-4 pa-md-8 pa-xl-10">
         <v-card-title
           class="text-h5 text-light-green-darken-2 font-weight-bold"
           tag="h3"

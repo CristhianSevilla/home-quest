@@ -16,35 +16,35 @@
           elimine cada una de manera eficiente.
         </p>
 
-        <v-row :cols="12" class="mt-5" align="start" justify="center">
+        <v-row :cols="12" class="mt-2">
           <v-col
             v-for="property in propertiesCollection"
             :key="property.id"
             cols="12"
-            md="4"
-            xl="3"
-            class="d-flex align-start"
+            sm="6"
+            md="3"
+            xl="2"
           >
             <v-card
               class="mx-auto my-3 card-equal-height"
-              max-width="344"
+              max-width="500"
               border
             >
               <v-img
                 :src="property.image"
                 alt="Imagen de la propiedad"
-                height="200px"
+                height="160px"
                 class="object-fit-cover"
                 cover
               />
               <v-card-title>{{ property.title }}</v-card-title>
+
               <v-card-subtitle
                 class="text-light-green-darken-4 font-weight-bold"
               >
                 {{ formatPrice(property.price) }}
               </v-card-subtitle>
-
-              <v-card-actions>
+              <v-card-actions class="d-flex justify-space-between align-center">
                 <v-btn
                   color="success"
                   elevation="2"
