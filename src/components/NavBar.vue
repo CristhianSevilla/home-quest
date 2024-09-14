@@ -57,6 +57,7 @@
     app
     v-model="drawer"
     class="hidden-md-and-up bg-green-lighten-5"
+    width="310"
   >
     <v-list class="d-md-none">
       <v-list-item
@@ -65,13 +66,30 @@
         @click="navigateTo('home')"
       ></v-list-item>
       <v-divider></v-divider>
-
       <v-list-item
         prepend-icon="mdi-wrench"
         title="Administración"
         @click="isAuth ? navigateTo('manage-houses') : navigateTo('login')"
       ></v-list-item>
     </v-list>
+    <v-divider></v-divider>
+
+    <div v-if="isAuth" class="ml-8">
+      <v-list>
+        <v-list-item
+          prepend-icon="mdi-home-group"
+          title="Todas las propiedades"
+          @click="navigateTo('manage-houses')"
+        />
+        <v-divider />
+        <v-list-item
+          prepend-icon="mdi-home-plus-outline"
+          title="Nueva propiedad"
+          @click="navigateTo('new-house')"
+        />
+        <v-divider />
+      </v-list>
+    </div>
     <template v-slot:append>
       <div class="pa-4">
         <v-btn

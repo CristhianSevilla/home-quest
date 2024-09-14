@@ -22,8 +22,8 @@
             :key="property.id"
             cols="12"
             sm="6"
-            md="3"
-            xl="2"
+            md="4"
+            xl="3"
           >
             <v-card
               class="mx-auto my-3 card-equal-height"

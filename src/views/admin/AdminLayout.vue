@@ -6,6 +6,7 @@
       app
       v-model="drawer"
       v-if="!isXsAndSmaller"
+      :width="drawerWidth"
     >
       <template v-slot:prepend>
         <v-list-item
@@ -47,9 +48,13 @@ const drawer = ref(true);
 const router = useRouter();
 
 // Acceso al breakpoint de Vuetify
-const { xs, sm } = useDisplay();
+const { xs, sm, md, xl, lg } = useDisplay();
 const isXsAndSmaller = computed(() => xs.value || sm.value);
-
+const drawerWidth = computed(() => {
+  if (md.value) return 260; // Ancho para pantallas medianas
+  if (lg.value) return 280; // Ancho para pantallas medianas
+  return 330; // Ancho para pantallas grandes y superiores
+});
 const navigateTo = (routeName) => {
   router.push({ name: routeName });
 };
